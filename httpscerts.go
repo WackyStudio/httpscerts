@@ -20,9 +20,7 @@ import (
 	"fmt"
 	"log"
 	"math/big"
-	"net"
 	"os"
-	"strings"
 	"time"
 )
 
@@ -117,7 +115,7 @@ func Generate(certPath string, keyPath string, host string) error {
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
 			Organization: []string{"Acme Co"},
-			CommonName: host
+			CommonName:   host,
 		},
 		NotBefore: notBefore,
 		NotAfter:  notAfter,
@@ -125,11 +123,10 @@ func Generate(certPath string, keyPath string, host string) error {
 		KeyUsage:              x509.KeyUsageCertSign,
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
-		DNSNames:[]string{
+		DNSNames: []string{
 			host,
 		},
-		IsCA:true,
-
+		IsCA: true,
 	}
 
 	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, publicKey(priv), priv)
